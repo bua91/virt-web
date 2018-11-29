@@ -1,0 +1,312 @@
+
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html 
+ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+ "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<title>CS 6301 - 009: Lab 4: Paravirtual VMM</title>
+<link rel="stylesheet" type="text/css" href="style.css" />
+<meta http-equiv="Content-Script-Type" content="text/javascript" />
+<script type="text/javascript" src="/util.js">
+</script>
+</head>
+<body>
+<h1>CS 6301 - 009: Lab 4: Paravirtual VMM</h1>
+<div id="topnavbar">
+<ul class="topnavlist">
+<li><a href="index.html">Home</a></li>
+<li><a href="syllabus.html">Schedule</a></li>
+<li><a href="policies.html">Syllabus</a></li>
+<li><a href="labs.html">Labs</a></li>
+<li><a href="tools.html">Tools</a></li>
+<li><a href="reference.html">References</a></li>
+<!--<li><a href="mailing.html">Mailing List</a></li>-->
+<!--<li><a href="tentativeschedule.html">Tentative schedule</a></li>-->
+<!--<li><a href="announcements.html">Announcements</a></li>-->
+</ul>
+</div>
+
+<script type="text/javascript" src="labs.js"></script>
+
+<h2>Introduction</h2>
+<p>
+This lab will guide you through writing a basic paravirtual 
+hypervisor.
+We will use the bochs x86 emulator, which has support
+for Intel's VT-x hardware support.
+The main topics this lab will cover are:
+bootstrapping a guest OS, programming extended page tables,
+emulating privileged instructions, and using hypercalls to implement
+hard drive emulation over a disk image file.
+
+</p>
+
+<h3>Getting Started</h3>
+
+<pre>
+1) First add the PATH for bochs:<br />
+    a) Open ~/.bash_profile : <b>vi ~/.bash_profile</b><br />
+    b) Add the line <b>PATH=$PATH:/bochs/bin</b> to <b>~/.bash_profile</b>
+
+2) Now use <b>bochs</b> instead of <b>qemu</b> to load and run obj/kern/kernel.img
+    a) jos@csjaws$ <kbd>cd lab</kbd>
+    b) jos@csjaws$ <kbd>make</kbd>
+    c) jos@csjaws$ <kbd>make bochs-nox</kbd>
+
+</pre>
+
+<h2>Part 1: VMM Bootstrap </h2>
+
+<p>The JOS VMM is launched by a fairly simple program in <tt>user/vmm.c</tt>.
+This application calls a new system call to create an environment (similar to a process)
+that runs in guest mode instead of ring 3 (<tt>sys_env_mkguest</tt>).
+</p>
+
+<p>Once the guest is created, the VMM then copies the bootloader and kernel
+into the guest's physical address space,  marks the environment as runnable,
+and waits until the guest exits.
+</p>
+
+<p>
+You will need to implement key pieces of the supporting system calls
+for the VMM, as well as some of the copying functionality.</p>
+
+<p>You can try running the vmm from the shell in your guest by typing:</p>
+<pre>
+$ vmm
+</pre>
+<p>This will currently panic the kernel because the code to detect
+vmx and extended page table support is not implemented, but
+as you complete the lab, you will see this launch a JOS-in-JOS environment.</p>
+
+<h3>Making a guest environment</h3>
+
+<p>The JOS bookkeeping for <tt>sys_env_mkguest</tt> is already provided for you
+in <tt>kern/syscall.c</tt>.  Especially if you did not work the JOS labs,
+you may wish to skim this code, as well as the code in <tt>kern/env.c</tt> to understand
+how environments are managed.  A major difference between a guest and a regular environment
+is that a guest has its type set to <tt>ENV_TYPE_GUEST</tt> as well as a <tt>VmxGuestInfo</tt> structureand a <tt>vmcs</tt> structure associated with it.
+</p>
+
+<p>The <tt>vmm</tt> directory includes the kernel-level support needed for 
+the VMM---primarily extended page table support.</p>
+
+<p>Your first task will be to implement detection that the CPU supports vmx and extended paging.
+do this by checking the output of the <tt>cpuid</tt> instruction 
+and reading the values in certain model specific registers (MSRs).
+</p>
+
+<div class="required">
+<p><span class="header">Exercise 1.</span>
+Read Chapters 23.6, 24.6.2, and  Appendices A.3.2-3 from the <a href="ref/vmx/64-ia-32-architectures-software-developer-vol-3c-part-3-manual.pdf">Intel manual</a> to 
+learn how to discover if the CPU supports vmx and extended paging.
+</p>
+<p>Once you have read these sections, implement the <tt>vmx_check_support()</tt>
+and <tt>vmx_check_ept()</tt> functions in <tt>vmm/vmx.c</tt>.  You will also need to add support to <tt>sched_yield()</tt> to call <tt>vmxon()</tt> when launcing a guest environment.
+</p>
+<p>If these functions are properly implemented, an attempt to start the VMM
+will not panic the kernel, but will fail because the vmm can't map 
+guest bootloader and kernel into the VM.
+</p>
+</div>
+
+<h3>Mapping in the guest bootloder and kernel</h3>
+
+<p>In <tt>user/vmm.c</tt> we have provided the structure of the code to 
+set up the guest and bootloader.  However, you must implement the
+memory manipulation code to copy the guest kernel and bootloader 
+into the VM.</p>
+
+<p>Like any other user application in JOS, the vmm has the ability to open files, read pages,
+and map pages into other
+environments via IPC.  One difference is that we've added a new system call <tt>sys_ept_map</tt>,
+which you must implement.  The high-level difference between <tt>sys_ept_map</tt> and <tt>sys_page_map</tt>
+is whether the page is added using extended page tables or regular page tables.
+
+<div class="required">
+<p><span class="header">Exercise 2.</span>
+Skim Chapter 28.2 of the <a href="ref/vmx/64-ia-32-architectures-software-developer-vol-3c-part-3-manual.pdf">Intel manual</a> to 
+familiarize yourself with low-level EPT programming.  Several helpful definitions have been provided
+in <tt>vmm/ept.h</tt>.
+</p>
+<p>
+Implement <tt>sys_ept_map</tt> in <tt>kern/syscall.c</tt>, as well as
+<tt>ept_lookup_gpa</tt> and <tt>ept_map_hva2gpa</tt> in <tt>vmm/ept.c</tt>.
+Once this is complete, you should have complete support for nested paging.
+</p>
+<p>Note: you will need to write your own test cases for these functions
+to verify that they work properly.</p>
+</div>
+
+<p>
+At this point, you have enough host-level support function to map the guest bootloader
+and kernel into the guest VM.
+You will need to read the kernel's ELF headers and copy the segments into the guest.
+</p>
+
+<div class="required">
+<p><span class="header">Exercise 3.</span>
+Implement <tt>copy_guest_kern_gpa()</tt> and <tt>map_in_guest()</tt> in <tt>user/vmm.c</tt>.
+For the bootloader, we use <tt>map_in_guest</tt> directly, since the bootloader is only 512 bytes,
+whereas the kernel's ELF header must be read by <tt>copy_guest_kern_gpa</tt>, which should then call
+<tt>map_in_guest</tt> for each segment.
+</p>
+<p>Once this is complete, the kernel will attempt to run the guest, and will panic because <tt>asm_vmrun</tt> is incomplete.</p>
+</div>
+
+<div class="challenge">
+<p><span class="header">Challenge</span> (20 bonus points, or part of the final project)
+One way this VMM paravirtualizes JOS is to map the kernel into the guest and use a simpler, modified bootloader.
+Replace our modified bootloader in <tt>vmm/jos_boot.S</tt> with the unmodified bootloader in
+<tt>boot/boot.S</tt>, and eliminate the need to map the kernel for the guest in the VMM.
+</p>
+<p>This will require trapping accesses to the I/O ports to detect disk reads, and possibly trapping other operations.</p>
+</div>
+
+<h3>Implementing vmlaunch and vmresume.</h3>
+
+<p>
+In this exercise, you will need to write some assembly to launch the VM.
+Although much of the VMCS setup is completed for you, this exercise will
+require you to use the <tt>vmwrite</tt> instruction to set the host stack pointer,
+as well as the <tt>vmlaunch</tt> and <tt>vmresume</tt> instructions to
+start the VM.
+</p>
+
+<p>
+In order to facilitate interaction between the guest and the JOS host kernel,
+we copy the guest register state into the environment's Trapframe structure.
+Thus, you will also write assembly to copy the relevant guest registers to and 
+from this trapframe struct.
+</p>
+
+<div class="required">
+<p><span class="header">Exercise 4.</span>
+Skim Chapter 26 of the <a href="ref/vmx/64-ia-32-architectures-software-developer-vol-3c-part-3-manual.pdf">Intel manual</a> to 
+familiarize yourself with the vmlaunch and vmresume instructions. 
+Complete the assembly code in <tt>asm_vmrun</tt> in <tt>vmm/vmx.c</tt>.
+</p>
+<p>Once this is complete, you should be able to run the VM until the guest attempts a <tt>vmcall</tt> instruction, which traps to the host kernel.
+Because the host isn't handling traps from the guest yet, the VM will be terminated.
+</p>
+</div>
+
+<h2>Part 2: Handling VM exits</h2>
+
+<p>
+The equivalent event to a trap from an application to the operating system is called a VM <i>exit</i>.
+We have provided some skeleton code to dispatch the major types of exits we expect our guest to provide in the <tt>vmm/vmx.c</tt> function <tt>vmexit()</tt>.
+You will need to identify the reason for the exit from the VMCS, as well as implement handler functions for certain events in 
+<tt>vmm/vmexits.c</tt>.
+</p>
+
+<p>
+Similar to issuing a system call (e.g., using the <tt>int</tt> or <tt>syscall</tt> instruction),
+a guest can programmatically trap to the host using the <tt>vmcall</tt> instruction (sometimes called hypercalls).
+The current JOS guest uses three hypercalls: one to read the e820 map, which specifies the 
+physical memory layout to the OS; and two to use host-level IPC, discussed below.</p>
+
+<h3>Multi-boot map (aka e820)</h3>
+
+<p>
+    JOS is "told" the amount of physical memory it has by the
+    bootloader. JOS's bootloader passes the kernel a multiboot info
+    structure which possibly contains the physical memory map of the
+    system. The memory map may exclude regions of memory that are in use
+    for reasons including IO mappings for devices (e.g., the "memory hole"), space
+    reserved for the BIOS, or physically damaged memory.
+    For more details on how this structure looks and what it
+    contains, refer to the <a
+    href="http://www.gnu.org/software/grub/manual/multiboot/multiboot.html">specification</a>. A
+    typical physical memory map for a PC with 10 GB of memory looks
+    like below.
+
+    <pre>
+        e820 MEMORY MAP
+            address: 0x0000000000000000, length: 0x000000000009f400, type: USABLE
+            address: 0x000000000009f400, length: 0x0000000000000c00, type: RESERVED
+            address: 0x00000000000f0000, length: 0x0000000000010000, type: RESERVED
+            address: 0x0000000000100000, length: 0x00000000dfefd000, type: USABLE
+            address: 0x00000000dfffd000, length: 0x0000000000003000, type: RESERVED
+            address: 0x00000000fffc0000, length: 0x0000000000040000, type: RESERVED
+            address: 0x0000000100000000, length: 0x00000001a0000000, type: USABLE
+    </pre>
+</p>
+
+<p>For the JOS guest, rather than emulate a BIOS, we will simply use a vmcall
+to request a "fake" memory map.  Complete emulation of this feature
+would be an excellent bonus task, or part of a final project.
+</p>
+
+<div class="required">
+<p><span class="header">Exercise 5.</span>
+Complete the implementation of <tt>vmexit()</tt> by identifying the reason for the exit from
+the VMCS.  You may need to search Chapter 27 of the 
+<a href="ref/vmx/64-ia-32-architectures-software-developer-vol-3c-part-3-manual.pdf">Intel manual</a> to 
+solve this part of the exercise.
+</p>
+<p>
+Implement the <tt>VMX_VMCALL_MBMAP</tt> case of the function <tt>handle_vmcall()</tt> in <tt>vmm/vmexits.c</tt>.
+Also, be sure to advance the instruction pointer so that the guest doesn't get in an infinite loop.
+</p>
+</div>
+
+<p>Once the guest gets a little further in boot, it will attempt to discover whether the 
+CPU supports long mode, using the <tt>cpuid</tt> instruction.
+Our VMCS is configured to trap on this instruction, so that we can emulate it---hiding the 
+presence of vmx, since we have not implemented emulation of vmx in software.
+</p>
+
+<div class="required">
+<p><span class="header">Exercise 6.</span>
+Once this is complete, implement <tt>handle_cpuid()</tt> in <tt>vmm/vmexits.c</tt>.
+</p>
+<p>
+When the host can emulate the <tt>cpuid</tt> instruction, your guest should run until it 
+attempts to perform disk I/O.
+</p>
+</div>
+
+<p>Recall that JOS has a user-level file system server daemon, similar to a microkernel.
+We place the guest's disk image as a file on the host file system server.
+When the guest file system daemon requests disk reads, rather than issuing ide-level commands, we will instead
+use vmcalls to ask the host file system daemon for regions of the disk image file.
+This is depicted in the image below.</p>
+
+<img src="disk-architecture.jpg"/>
+
+<div class="required">
+<p><span class="header">Exercise 7.</span>
+Modify <tt>bc_pgfault</tt> amd <tt>flush_block</tt> in <tt>fs/bc.c</tt> to issue 
+I/O requests using the <tt>host_read</tt> and <tt>host_write</tt> hypercalls.
+Use the macro <tt>VMM_GUEST</tt> to select different behavior for the guest and host OS.
+</p>
+<p>
+Once this is complete, you will need to implement the IPC send and receive hypercalls in <tt>handle_vmcall</tt>,
+as well as the client code to issue <tt>ipc_host_send</tt> and <tt>ipc_host_recv</tt> vmcalls in <tt>lib/ipc.c></tt>.
+</p>
+<p>Finally, you will need to extend the <tt>sys_ipc_try_send</tt> and <tt>sys_ipc_recv</tt> calls to 
+detect whether the environment is of type <tt>ENV_TYPE_GUEST</tt> or not, and replace the pmap functions with ept calls.
+You will also need to implement the <tt>ept_page_insert</tt> function.
+</div>
+
+<p>
+Once these steps are complete, you should have a fully running JOS-on-JOS.</p>
+
+<h3>Hand-In Procedure</h3>
+
+<p>
+Submit the solution to /cs6301-virt/netID/lab4/ in csjaws.utdallas.edu
+</p>
+
+
+<p>
+<b>This completes the lab.</b>
+</p>
+
+<hr />
+<p class="lastupdated">Last updated: 2017-01-14 22:43:49 -0500
+ [<a href="http://validator.w3.org/check?uri=referer">validate xhtml</a>]</p>
+</body>
+</html>

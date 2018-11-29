@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html 
+ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+ "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<title>COMP 790: Labs</title>
+<link rel="stylesheet" type="text/css" href="style.css" />
+<meta http-equiv="Content-Script-Type" content="text/javascript" />
+<script type="text/javascript" src="/util.js">
+</script>
+</head>
+<body>
+<h1>COMP 790: Labs</h1>
+<div id="topnavbar">
+<ul class="topnavlist">
+<li><a href="index.html">Home</a></li>
+<li><a href="syllabus.html">Schedule</a></li>
+<li><a href="policies.html">Syllabus</a></li>
+<li><a href="labs.html">Labs</a></li>
+<li><a href="tools.html">Tools</a></li>
+<li><a href="reference.html">References</a></li>
+<!--<li><a href="mailing.html">Mailing List</a></li>-->
+<!--<li><a href="tentativeschedule.html">Tentative schedule</a></li>-->
+<!--<li><a href="announcements.html">Announcements</a></li>-->
+</ul>
+</div>
+
+
+<h2> Assignments </h2>
+
+<ul>
+<li><a href="lab1.html">Lab 1</a>: JOS Warm-Up: x86 Assembly, Boot Loader</li>
+<li><a href="lab2.html">Lab 2</a>: JOS Memory Management</li>
+<li><a href="lab3.html">Lab 3</a>: JOS Process Management</li>
+<li><a href="lab4.html">Lab 4</a>: Basic Paravirtual Hypervisor </li>
+<li><a href="lab5.html">Lab 5</a>: Final Project </li>
+</ul>
+
+<h2> Is any kind of collaboration permitted on the labs? </h2>
+
+<!--<p>
+You may work in teams of two or alone.  You may not change partners after 
+the first lab without explicit permission of the instructor. 
+Do not discuss code with anyone other than your partner and the course staff. 
+The <a href="policies.html#dishonesty">collaboration policy</a> elaborates.
+</p>
+
+<p>Between Labs 3 and 4, we will give you a substantial amount of base
+code to accelerate you through the rest of the JOS exercises.  We want
+you to do the intial JOS labs to understand how this code is
+implemented in a baseline operating system, to facilitate modifying
+the code to work as a hypervisor.</p>
+-->
+<p>TBA</p>
+<h2> Overview </h2>
+
+<p>A crucial component of the course is the labs. You will implement
+(the interesting pieces of) a real virtual machine monitor
+that will boot and run on a
+PC. 
+We will do this by adding a hosted (Type 2) VMM, similar in some ways to VMware
+workstation or KVM, to the JOS operating system.
+JOS was developed at MIT and
+has been used in courses at several other schools. </p>
+
+<p>JOS is simpler than Linux and Windows, but it includes most key
+operating systems abstractions, including a bootloader, memory
+protection, memory relocation, multiprogramming, a rudimentary file
+system, and a command shell.</p>
+
+<p>JOS can be thought of as an <a
+href="http://pdos.csail.mit.edu/6.828/2008/readings/engler95exokernel.pdf">exokernel</a>, where the kernel
+implements a minimal set of core functionality that safely exports
+hardware resources to applications. These low-level kernel interfaces
+may be inconvenient for user processes to use directly, so user
+processes will make use of a "library operating system" (libos) to
+abstract these low-level exported resources into more convenient
+programming abstractions.</p>
+
+<p>Compared to a traditional kernel design, an exokernel is fairly well suited
+to hosting a hypervisor, as the system call API is fairly close
+to the hardware, and there is already a fairly robust IPC mechanism.
+</p>
+
+<p>Each lab in the series enhances the functionality of your operating
+system. Each lab builds on the previous one, so it is important that you
+design, build, and test carefully at each step. Carelessness in early
+labs will be costly down the road. There are not a lot of lines of
+code to write on this project; take the time to understand each phase
+before moving to the next one.</p>
+
+
+<hr />
+<p class="lastupdated">Last updated: 2017-01-14 20:30:50 -0500
+ [<a href="http://validator.w3.org/check?uri=referer">validate xhtml</a>]</p>
+</body>
+</html>

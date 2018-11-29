@@ -1,0 +1,375 @@
+
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html 
+ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+ "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<title>CS 6301 - 009: Reference Materials</title>
+<link rel="stylesheet" type="text/css" href="style.css" />
+<meta http-equiv="Content-Script-Type" content="text/javascript" />
+<script type="text/javascript" src="/util.js">
+</script>
+</head>
+<body>
+<h1>CS 6301 - 009: Reference Materials</h1>
+<div id="topnavbar">
+<ul class="topnavlist">
+<li><a href="index.html">Home</a></li>
+<li><a href="syllabus.html">Schedule</a></li>
+<li><a href="policies.html">Syllabus</a></li>
+<li><a href="labs.html">Labs</a></li>
+<li><a href="tools.html">Tools</a></li>
+<li><a href="reference.html">References</a></li>
+<!--<li><a href="mailing.html">Mailing List</a></li>-->
+<!--<li><a href="tentativeschedule.html">Tentative schedule</a></li>-->
+<!--<li><a href="announcements.html">Announcements</a></li>-->
+</ul>
+</div>
+
+
+<h2>OS textbooks</h2>
+
+<p>For brushing up on basic OS concepts:</p>
+
+<ul>
+<li><i>Understanding the Linux Kernel, 3rd Edition</i>, By Daniel P. Bovet, Marco Cesati</li>
+<li><i>Modern Operating Systems (third edition)</i>, Andrew S. Tanenbaum.
+Prentice Hall, Inc., 2008. ISBN: 0-13-600663-9.</li>
+<li><i>Operating System Concepts (eighth edition)</i>, Abraham
+Silberschatz, Peter Baer Galvin, and Greg Gagne. John Wiley &amp; Sons, 2008. ISBN: 0-47-012872-0.</li>
+</ul>
+
+<h2>C programming</h2>
+
+<p>The classic book on C:</p>
+
+<ul>
+<li><i>The C programming language (second edition)</i>, Brian W. Kernighan
+and Dennis M. Ritchie. Prentice Hall, Inc., 1988. ISBN: 0-13-110362-8.</li>
+</ul>
+
+<h2>Programming Intel vmx</h2>
+
+<p>Although there are good summaries around the web, the relevant chapters of 
+Volume 3c Part 3 of the 
+<a href="ref/vmx/64-ia-32-architectures-software-developer-vol-3c-part-3-manual.pdf">Intel manual</a> 
+are the most comprehensive explanation of how to program 
+this hardware.</p>
+<p>You can also refer to <a href="ref/virt_book.pdf">Hardware and Software Support for Virtualization</a></p>
+
+<h2>x86 Assembly Language Programming</h2>
+
+<p>(Thanks to Eddie Kohler and MIT's 6.828 course staff for the links and
+commentary below.)</p>
+
+<ul>
+
+<li><a href='http://www.drpaulcarter.com/pcasm/'><i>PC Assembly
+      Language</i></a>, Paul A. Carter, November 2003.  188pp.  <a
+      href='ref/carter03pc.pdf'>(local PDF copy)</a>
+
+<p class='note'>A clear description of x86 assembly language and assembly
+  language in general, including some stuff you ideally know already.
+  You might prefer to read this on line, rather than print it out; it's a
+  quick read.  <i>Warning:</i> This book uses "Intel" assembly syntax, in
+  which instructions are written "<code>instr dst, src</code>"; we will use
+  "AT&amp;T" assembly syntax, in which they are written "<code>instr src,
+  dst</code>".  You don't need to read the following sections, which will
+  not be needed for class: 1.3.6-1.3.7, 1.4, 1.5, 5, 6, and 7.2.</p>
+</li>
+
+<li><a
+       href='http://www.delorie.com/djgpp/doc/brennan/brennan_att_inline_djgpp.html'>Brennan's
+       Guide to Inline Assembly</a>, Brennan "Bas" Underwood.  <a
+       href='ref/brennansguide.html'>(local copy)</a>
+
+<p class='note'>A short and sweet description of how to use inline assembly
+  instructions with GCC.  Includes a description of the "AT&amp;T" assembly
+  syntax used by GCC.</p>
+
+</li>
+
+<li><b>Reference Manuals</b>
+
+<ul>
+<li><i>Intel 80386 Programmer's Reference Manual</i>, 1987 (HTML).
+	<a href="ref/i386/toc.html">(local copy - HTML)</a>
+	<a href='ref/i386.pdf'>(local copy - PDF)</a>
+
+<p class='note'>Much shorter than the current Intel Architecture manuals,
+  but describes most of the processor features we'll use.  The original was
+  a flat text file that used the PC <a
+  href='ref/codepage437linedrawing.gif'>Line Drawing characters</a> for
+  diagrams; this, and many other versions, are available on the
+  net. JOS uses the following 486-and-later features, which you
+  can read about in the IA-32 manuals: The
+  <code>%cr0</code> register's <code>WP</code> bit (Volume 3).</p>
+
+</li>
+
+<li><a
+href="http://developer.intel.com/products/processor/manuals/index.htm">IA-32
+Intel Architecture Software Developer's Manuals</a>, Intel, 2007.  Local copies:
+	<ul>
+
+	<li>	<a href="ref/ia32/IA32-1.pdf">
+		Volume 1: Basic Architecture</a>
+	</li>
+	<li>	<a href="ref/ia32/IA32-2A.pdf">
+		Volume 2A: Instruction Set Reference, A-M</a>
+	</li>
+	<li>	<a href="ref/ia32/IA32-2B.pdf">
+
+		Volume 2B: Instruction Set Reference, N-Z</a>
+	</li>
+	<li>	<a href="ref/ia32/IA32-3A.pdf">
+		Volume 3A: System Programming Guide, Part 1</a>
+	</li>
+	<li>	<a href="ref/ia32/IA32-3B.pdf">
+		Volume 3B: System Programming Guide, Part 2</a>
+
+	</li>
+	</ul>
+
+<p class='note'>The latest and longest documents from Intel.</p></li>
+
+<li><a
+       href="http://www.amd.com/us-en/Processors/DevelopWithAMD/0,,30_2252_739_7044,00.html">AMD64 Architecture Programmer's Manual</a>
+
+<p class='note'>Covers both the "classic" 32-bit x86 architecture and the
+	new 64-bit extensions supported by the latest AMD and Intel
+	processors.</p></li>
+
+<li>    Multiprocessor references:
+        <ul>
+
+	<li>	<a href="ref/ia32/MPspec.pdf">MP
+	specification</a></li>
+	<li>	<a href="ref/ia32/ioapic.pdf">IO APIC</a></li>
+	</ul>
+</li>
+
+</ul>
+</li>
+<li><a href="ref/elf-1.2.pdf">Tool Interface Standard (TIS) Executable and
+			Linking Format (ELF) Specification, Version
+			1.2</a>
+
+<p class='note'>Our kernel runs ELF executables; this is the definitive
+  standard for how these executables are constructed.</p></li>
+
+
+<li><a
+href='http://ftp.gnu.org/pub/old-gnu/Manuals/ld-2.9.1/html_node/ld_5.html'>GNU ld Command Language</a> (for linker scripts)</li>
+
+<li><a href="http://sources.redhat.com/gdb/onlinedocs/stabs.html">The STABS Debugging Format</a> (for the debugging symbols used by our kernel)</li>
+
+</ul>
+
+
+<h2>x86 Emulation</h2>
+
+<ul>
+<li>	<a href="http://bochs.sourceforge.net">Bochs</a> - An x86 platform
+and CPU emulator.
+	<ul>
+	<li><a
+	href="http://bochs.sourceforge.net/doc/docbook/user/index.html">User
+	manual</a></li>
+	<li><a
+	href="http://bochs.sourceforge.net/doc/docbook/user/internal-debugger.html">Debugger
+	reference</a></li>
+
+	</ul>
+</li>
+<li>	<a href="http://bellard.org/qemu/">QEMU</a> -
+	A new, much faster but less mature PC emulator.
+	We now use qemu as the default JOS platform.
+</li>
+</ul>
+
+
+<h2> PC Hardware Progamming </h2>
+
+<ul>
+
+<li>	General PC architecture information
+	<ul>
+	<li>	<a href="http://web.archive.org/web/20040603021346/http://members.iweb.net.au/~pstorr/pcbook/">
+		Phil Storrs PC Hardware book</a>,
+		Phil Storrs, December 1998.</li>
+	<li>	<a href="http://bochs.sourceforge.net/techspec/">
+		Bochs technical hardware specifications directory</a>.</li>
+	</ul>
+</li>
+<li>	General BIOS and PC bootstrap
+	<ul>
+
+	<li>	<a href="http://www.bioscentral.com/">BIOS Central</a></li>
+	<li>	<a href="http://www.htl-steyr.ac.at/~morg/pcinfo/hardware/interrupts/inte1at0.htm">BIOS Services and Software Interrupts</a>,
+		Roger Morgan, 1997.</li>
+	<li>	<a href="http://www.phoenix.com/en/Customer+Services/White+Papers-Specs/pc+industry+specifications.htm">
+		"El Torito" Bootable CD-ROM Format Specification</a>,
+		Phoenix/IBM, January 1995.
+		<a href="ref/boot-cdrom.pdf">(local copy)</a></li>
+	</ul>
+</li>
+<li>	VGA display - <samp>kern/console.c</samp>
+	<ul>
+	<li>	<a href="http://www.vesa.org/public/VBE/vbe3.pdf">
+		VESA BIOS Extension (VBE) 3.0</a>,
+		<a href="http://www.vesa.org/">
+		Video Electronics Standards Association</a>,
+		September 1998.
+		<a href="ref/hardware/vbe3.pdf">(local copy)</a>
+	</li>
+	<li>	<a href="http://home.worldonline.dk/finth/">
+		VGADOC</a>, Finn Th&oslash;gersen, 2000.
+		<a href="ref/hardware/vgadoc/">(local copy - text)</a>
+		<a href="ref/hardware/vgadoc4b.zip">(local copy - ZIP)</a>
+	</li>
+	<li>	<a href="http://www.osdever.net/FreeVGA/home.htm">
+		Free VGA Project</a>, J.D. Neal, 1998.
+	</li>
+	</ul>
+</li>
+<li>	Keyboard and Mouse - <samp>kern/console.c</samp>
+	<ul>
+	<li>	<a
+	href="http://www.computer-engineering.org/index.html">Adam
+	Chapweske's resources</a>.
+	</li>
+	</ul>
+</li>
+<li>	8253/8254 Programmable Interval Timer (PIT)
+		- <samp>inc/timerreg.h</samp>
+	<ul>
+
+	<li>	<a href="http://www.intel.com/design/archives/periphrl/docs/23124406.htm">82C54 CHMOS Programmable Interval Timer</a>,
+		Intel, October 1994.
+		<a href="ref/hardware/82C54.pdf">(local copy)</a>
+	</li>
+	<li>	<a href="http://www.decisioncards.com/io/tutorials/8254_tut.html">Data Solutions 8253/8254 Tutorial</a>,
+		Data Solutions.
+	</li>
+	</ul>
+</li>
+<li>	8259/8259A Programmable Interrupt Controller (PIC)
+		- <samp>kern/picirq.*</samp>
+	<ul>
+
+	<li>	<a href="ref/hardware/8259A.pdf">
+		8259A Programmable Interrupt Controller</a>,
+		Intel, December 1988.
+	</li>
+	</ul>
+</li>
+<li>	Real-Time Clock (RTC)
+		- <samp>kern/kclock.*</samp>
+	<ul>
+	<li>	<a href="http://web.archive.org/web/20040603021346/http://members.iweb.net.au/~pstorr/pcbook/">
+		Phil Storrs PC Hardware book</a>,
+		Phil Storrs, December 1998.  In particular:
+		<ul>
+
+		<li>	<a href="http://web.archive.org/web/20040603021346/http://members.iweb.net.au/~pstorr/pcbook/book5/cmos.htm">Understanding the CMOS</a></li>
+		<li>	<a href="http://web.archive.org/web/20040603021346/http://members.iweb.net.au/~pstorr/pcbook/book5/cmoslist.htm">A list of what is in the CMOS</a></li>
+		</ul>
+	</li>
+	<li>	<a href="http://bochs.sourceforge.net/techspec/CMOS-reference.txt">
+		CMOS Memory Map</a>, Padgett Peterson, May 1996.
+	</li>
+	<li>	<a href="http://www.st.com/stonline/books/ascii/docs/4557.htm">
+
+		M48T86 PC Real-Time Clock</a>,
+		ST Microelectronics, April 2004.
+		<a href="ref/hardware/M48T86.pdf">(local copy)</a>
+	</li>
+	</ul>
+</li>
+<li>	16550 UART Serial Port - <samp>kern/console.c</samp>
+	<ul>
+	<li>	<a href="http://www.national.com/pf/PC/PC16550D.html">
+
+		PC16550D Universal Asynchronous Receiver/Transmitter
+		with FIFOs</a>,
+		National Semiconductor, 1995.
+	</li>
+	<li>	<a href="http://byterunner.com/16550.html">
+		Technical Data on 16550</a>,
+		Byterunner Technologies.
+	</li>
+	<li>	<a href="http://www.beyondlogic.org/serial/serial.htm">
+		Interfacing the Serial / RS232 Port</a>,
+		Craig Peacock, August 2001.
+	</li>
+	</ul>
+</li>
+<li>	IEEE 1284 Parallel Port - <samp>kern/console.c</samp>
+
+	<ul>
+	<li>	<a href="http://www.lvr.com/parport.htm">
+		Parallel Port Central</a>, Jan Axelson.
+	</li>
+	<li>	<a href="http://www.fapo.com/porthist.htm">
+		Parallel Port Background</a>, Warp Nine Engineering.
+	</li>
+	<li>	<a href="http://zone.ni.com/devzone/conceptd.nsf/webmain/0989d3d9dafae64e8625680400679736?OpenDocument">
+		IEEE 1284 - Updating the PC Parallel Port</a>,
+		National Instruments.
+	</li>
+	<li>	<a href="http://www.beyondlogic.org/spp/parallel.htm">
+
+		Interfacing the Standard Parallel Port</a>,
+		Craig Peacock, August 2001.
+	</li>
+	</ul>
+</li>
+<li>	IDE hard drive controller - <samp>fs/ide.c</samp>
+	<ul>
+	<li>	<a href="ref/hardware/ATA-d1410r3a.pdf">
+		AT Attachment with Packet Interface - 6 (working draft)</a>,
+		ANSI, December 2001.
+	</li>
+	<li>	<a href="ref/hardware/IDE-BusMaster.pdf">
+
+		Programming Interface for Bus Master IDE Controller</a>,
+		Brad Hosler, Intel, May 1994.
+	</li>
+	<li>	<a href="http://suif.stanford.edu/~csapuntz/ide.html">
+		The Guide to ATA/ATAPI documentation</a>,
+		Constantine Sapuntzakis, January 2002.
+	</li>
+	</ul>
+</li>
+<li>	Sound cards
+	(not supported in JOS,
+	but you're welcome to do it as a challenge problem!)
+	<ul>
+	<li>	<a href="http://www.stud.fh-hannover.de/~heineman/proginfo.htm">
+		Signal Processing using Sound Cards</a>
+	</li>
+	<li>	<a href="ref/hardware/SoundBlaster.pdf">
+		Sound Blaster Series Hardware Programming Guide</a>,
+		Creative Technology, 1996.
+	</li>
+	<li>	<a href="ref/hardware/8237A.pdf">
+		8237A High Performance Programmable DMA Controller</a>,
+		Intel, September 1993.
+	</li>
+	<li>	<a href="http://homepages.cae.wisc.edu/~brodskye/sb16doc/sb16doc.html">
+		Sound Blaster 16 Programming Document</a>,
+		Ethan Brodsky, June 1997.
+	</li>
+	<li>	<a href="http://www.inversereality.org/tutorials/sound programming/soundprogramming.html">Sound Programming</a>,
+		Inverse Reality.
+	</li>
+	</ul>
+</li>
+</ul>
+<hr />
+<p class="lastupdated">Last updated: 2017-01-14 20:29:45 -0500
+ [<a href="http://validator.w3.org/check?uri=referer">validate xhtml</a>]</p>
+</body>
+</html>

@@ -1,0 +1,71 @@
+<!DOCTYPE html PUBLIC "-//IETF//DTD HTML 2.0//EN">
+<!-- saved from url=(0066)http://www.cs.unc.edu/~porter/courses/comp790/s17/ref/i386/c09.htm -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>80386 Programmer's Reference Manual -- Chapter 09</title>
+</head>
+<body>
+<b>up:</b> <a href="http://www.cs.unc.edu/~porter/courses/comp790/s17/ref/i386/toc.htm">
+Table of Contents</a><br>
+<b>prev:</b> <a href="http://www.cs.unc.edu/~porter/courses/comp790/s17/ref/i386/s08_03.htm">8.3  Protection and I/O</a><br>
+<b>next:</b> <a href="http://www.cs.unc.edu/~porter/courses/comp790/s17/ref/i386/s09_01.htm">9.1  Identifying Interrupts</a>
+<p>
+</p><hr>
+<p>
+</p><h1>Chapter 9  Exceptions and Interrupts</h1>
+<p>
+Interrupts and exceptions are special kinds of control transfer; they work
+somewhat like unprogrammed 
+<a href="http://www.cs.unc.edu/~porter/courses/comp790/s17/ref/i386/CALL.htm">CALL</a>s. They alter the normal program flow to
+handle external events or to report errors or exceptional conditions. The
+difference between interrupts and exceptions is that interrupts are used to
+handle asynchronous events external to the processor, but exceptions handle
+conditions detected by the processor itself in the course of executing
+instructions.
+</p><p>
+There are two sources for external interrupts and two sources for
+exceptions:
+</p><ol>
+<li>Interrupts
+<ul>
+<li>Maskable interrupts, which are signalled via the INTR pin.
+
+</li><li>Nonmaskable interrupts, which are signalled via the NMI
+         (Non-Maskable Interrupt) pin.
+</li></ul>
+</li><li>Exceptions
+<ul>
+<li>Processor detected. These are further classified as faults, traps,
+         and aborts.
+
+</li><li>Programmed. The instructions 
+<a href="http://www.cs.unc.edu/~porter/courses/comp790/s17/ref/i386/INT.htm">INTO</a>, 
+<a href="http://www.cs.unc.edu/~porter/courses/comp790/s17/ref/i386/INT.htm">INT</a> 3, 
+<a href="http://www.cs.unc.edu/~porter/courses/comp790/s17/ref/i386/INT.htm">INT n</a>, and 
+<a href="http://www.cs.unc.edu/~porter/courses/comp790/s17/ref/i386/BOUND.htm">BOUND</a> can
+         trigger exceptions. These instructions are often called "software
+         interrupts", but the processor handles them as exceptions.
+</li></ul>
+</li></ol>
+This chapter explains the features that the 80386 offers for controlling
+and responding to interrupts when it is executing in protected mode.
+<p>
+<a href="http://www.cs.unc.edu/~porter/courses/comp790/s17/ref/i386/s09_01.htm">9.1  Identifying Interrupts</a><br>
+<a href="http://www.cs.unc.edu/~porter/courses/comp790/s17/ref/i386/s09_02.htm">9.2  Enabling and Disabling Interrupts</a><br>
+<a href="http://www.cs.unc.edu/~porter/courses/comp790/s17/ref/i386/s09_03.htm">
+9.3  Priority Among Simultaneous Interrupts and Exceptions</a><br>
+<a href="http://www.cs.unc.edu/~porter/courses/comp790/s17/ref/i386/s09_04.htm">9.4  Interrupt Descriptor Table</a><br>
+<a href="http://www.cs.unc.edu/~porter/courses/comp790/s17/ref/i386/s09_05.htm">9.5  IDT Descriptors</a><br>
+<a href="http://www.cs.unc.edu/~porter/courses/comp790/s17/ref/i386/s09_06.htm">9.6  Interrupt Tasks and Interrupt Procedures</a><br>
+<a href="http://www.cs.unc.edu/~porter/courses/comp790/s17/ref/i386/s09_07.htm">9.7  Error Code</a><br>
+<a href="http://www.cs.unc.edu/~porter/courses/comp790/s17/ref/i386/s09_08.htm">9.8  Exception Conditions</a><br>
+<a href="http://www.cs.unc.edu/~porter/courses/comp790/s17/ref/i386/s09_09.htm">9.9  Exception Summary</a><br>
+<a href="http://www.cs.unc.edu/~porter/courses/comp790/s17/ref/i386/s09_10.htm">9.10  Error Code Summary</a>
+</p><p>
+</p><hr>
+<p>
+<b>up:</b> <a href="http://www.cs.unc.edu/~porter/courses/comp790/s17/ref/i386/toc.htm">
+Table of Contents</a><br>
+<b>prev:</b> <a href="http://www.cs.unc.edu/~porter/courses/comp790/s17/ref/i386/s08_03.htm">8.3  Protection and I/O</a><br>
+<b>next:</b> <a href="http://www.cs.unc.edu/~porter/courses/comp790/s17/ref/i386/s09_01.htm">9.1  Identifying Interrupts</a>
+
+</p></body></html>
